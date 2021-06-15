@@ -27,19 +27,21 @@
         "husky": "^6.0.0",
         "prettier": "^2.3.1",
         "pretty-quick": "^3.1.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
         "style-loader": "^2.0.0",
         "webpack": "^5.39.0",
         "webpack-cli": "^4.7.2",
         "webpack-dev-server": "^3.11.2"
     },
     "dependencies": {
-        "prop-types": "^15.7.2",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2"
+        "prop-types": "^15.7.2"
     },
     "scripts": {
         "start": "webpack serve",
+        "build": "webpack",
         "format": "yarn run format:prettier",
-        "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write"
+        "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write",
+        "publish-new-patch": "npm version patch && npm publish"
     }
 }
