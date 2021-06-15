@@ -1,4 +1,13 @@
 {
- "presets": ["@babel/preset-react"],
- "plugins": ["@babel/plugin-proposal-class-properties"]
+    "presets": [
+        [
+            "@babel/env",
+            {
+                "modules": "commonjs",
+                "targets": ["last 2 versions", "not dead"]
+            }
+        ],
+        "@babel/preset-react"
+    ],
+    "plugins": ["@babel/plugin-proposal-class-properties"]
 }

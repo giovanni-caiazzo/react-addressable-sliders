@@ -17,29 +17,23 @@
         "addressable"
     ],
     "devDependencies": {
+        "@babel/cli": "^7.8.4",
         "@babel/plugin-proposal-class-properties": "^7.14.5",
+        "@babel/preset-env": "^7.9.5",
         "@babel/preset-react": "^7.14.5",
         "@babel/core": "^7.14.6",
-        "babel-loader": "^8.2.2",
         "babel-preset-react": "^6.24.1",
-        "css-loader": "^5.2.6",
-        "html-webpack-plugin": "^5.3.1",
         "husky": "^6.0.0",
         "prettier": "^2.3.1",
         "pretty-quick": "^3.1.0",
         "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "style-loader": "^2.0.0",
-        "webpack": "^5.39.0",
-        "webpack-cli": "^4.7.2",
-        "webpack-dev-server": "^3.11.2"
+        "react-dom": "^17.0.2"
     },
     "dependencies": {
         "prop-types": "^15.7.2"
     },
     "scripts": {
-        "start": "webpack serve",
-        "build": "webpack",
+        "build": "babel ./src -d lib/js --config-file ./.babelrc",
         "format": "yarn run format:prettier",
         "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write",
         "publish-new-patch": "npm version patch && npm publish"

@@ -1,5 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import MultiRangeSlider from './js/MultiRangeSlider';
 
 Object.defineProperty(exports, 'MultiRangeSlider', {
@@ -8,9 +6,3 @@ Object.defineProperty(exports, 'MultiRangeSlider', {
         return MultiRangeSlider.default;
     },
 });
-
-const App = () => {
-    return <MultiRangeSlider init_ranges={[]} />;
-};
-
-ReactDOM.render(<App />, document.getElementById('root'));
