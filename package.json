@@ -10,6 +10,9 @@
         "type": "git",
         "url": "https://github.com/giovanni-caiazzo/react-addressable-sliders.git"
     },
+    "bugs": {
+        "url": "https://github.com/giovanni-caiazzo/react-addressable-sliders/issues"
+    },
     "keywords": [
         "react",
         "slider",
@@ -23,7 +26,6 @@
         "@babel/preset-react": "^7.14.5",
         "@babel/core": "^7.14.6",
         "babel-preset-react": "^6.24.1",
-        "husky": "^6.0.0",
         "prettier": "^2.3.1",
         "pretty-quick": "^3.1.0",
         "react": "^17.0.2",
