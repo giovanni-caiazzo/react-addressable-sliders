@@ -1,0 +1,12 @@
+static
+deploy
+dist
+vendors
+node_modules
+*.hbs
+*.jpg
+*.lock
+*.crt
+*.key
+.prettierignore
+/tmp/
