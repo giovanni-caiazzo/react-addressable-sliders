@@ -4,7 +4,7 @@
     "description": "Multi-range slider made with react with addressable and identifiable ranges",
     "private": false,
     "author": "Giovanni Caiazzo",
-    "main": "src/index.js",
+    "main": "lib/index.js",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -33,7 +33,7 @@
         "prop-types": "^15.7.2"
     },
     "scripts": {
-        "build": "babel ./src -d lib/js --config-file ./.babelrc",
+        "build": "babel ./src -d lib --config-file ./.babelrc",
         "format": "yarn run format:prettier",
         "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write",
         "publish-new-patch": "npm version patch && npm publish"
