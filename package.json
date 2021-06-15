@@ -1,0 +1,34 @@
+{
+    "name": "react-addressable-sliders",
+    "version": "1.0.0",
+    "description": "",
+    "private": false,
+    "author": "Giovanni Caiazzo",
+    "main": "./src/js/index.jsx",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/giovanni-caiazzo/react-addressable-sliders.git"
+    },
+    "keywords": [
+        "react",
+        "slider",
+        "multi-range",
+        "addressable"
+    ],
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged"
+        }
+    },
+    "devDependencies": {
+        "prettier": "^2.3.1",
+        "pretty-quick": "^3.1.0",
+        "husky": "^6.0.0"
+    },
+    "dependencies": {
+        "prop-types": "^15.7.2",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
+    }
+}
