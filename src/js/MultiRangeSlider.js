@@ -209,7 +209,8 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
 };
 
 MultiRangeSlider.propTypes = {
-    init_ranges: PropTypes.object.isRequired,
+    ranges: PropTypes.object.isRequired,
+    extremes: PropTypes.object,
     options: PropTypes.object,
     emptySpaceCallback: PropTypes.func,
     labelFormatFun: PropTypes.func,
