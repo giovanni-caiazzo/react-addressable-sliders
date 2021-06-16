@@ -76,7 +76,7 @@ export const checkRanges = (init_ranges, options) => {
             ? considered_range.trackColor
             : options?.getTrackColor
             ? options.getTrackColor(considered_range)
-            : `#${considered_range.ref_id.substr(0, 6)}`;
+            : `#${considered_range.ref_id ? considered_range.ref_id.substr(0, 6) : considered_range.parent_id ? considered_range.parent_id.substr(0, 6) : 'CCC'}`;
         range_intervals.forEach(range => {
             if (considered_range.id !== range.id) {
                 if (considered_range.min < range.max && considered_range.min > range.min) {
@@ -131,9 +131,6 @@ export const getClickedValueOnTrack = (event, extremes, ranges) => {
         }
     });
     return {
-        xPosition,
-        xTotal,
-        xOffset,
         relativePercentage,
         relativeValue,
         closestRanges: {

@@ -32,6 +32,8 @@ const styles = {
     sliderName: {
         position: 'absolute',
         fontWeight: 'bold',
+        color: 'black',
+        backgroundColor: 'white',
         fontSize: '12px',
         width: '100%',
         minWidth: 10,
@@ -46,6 +48,8 @@ const styles = {
         position: 'absolute',
         fontWeight: 'bold',
         fontSize: '12px',
+        color: 'black',
+        backgroundColor: 'white',
         width: 'auto',
         zIndex: 1500,
         textAlign: 'center',
@@ -61,6 +65,7 @@ const styles = {
     sliderValue: {
         position: 'absolute',
         fontSize: '12px',
+        color: 'black',
         marginTop: '20px',
         width: 'auto',
         minWidth: '21px',
@@ -74,21 +79,22 @@ const styles = {
     },
     disabledThumb: {
         backgroundColor: '#ccc!important',
-        '&::-webkit-slider-thumb': {
+        '&::WebkitSliderThumb': {
             backgroundColor: '#ccc!important',
         },
-        '&::-moz-range-thumb': {
+        '&::MozRangeThumb': {
             backgroundColor: '#ccc!important',
         },
     },
     thumb: {
         pointerEvents: 'none',
+        backgroundColor: 'black',
         position: 'absolute',
         height: '0',
         width: '100%',
         outline: 'none',
         zIndex: 4,
-        '&::-webkit-slider-thumb': {
+        '&::WebkitSliderThumb': {
             border: 'none',
             borderRadius: '50%',
             boxShadow: '0 0 1px 1px #ced4da',
@@ -99,7 +105,7 @@ const styles = {
             pointerEvents: 'all',
             position: 'relative',
         },
-        '&::-moz-range-thumb': {
+        '&::MozRangeThumb': {
             border: 'none',
             borderRadius: '50%',
             boxShadow: '0 0 1px 1px #ced4da',
@@ -113,36 +119,36 @@ const styles = {
     },
 };
 
-const MultiRangeSlider = ({ init_ranges = {}, options = {}, emptySpaceCallback, labelFormatFun, init_extremes, emitChanges, checkContinuousChanges }) => {
-    const [extremes, setExtremes] = useState(init_extremes || getMinAndMaxFromRanges(init_ranges));
-    const [ranges, setRanges] = useState(checkRanges(init_ranges, options));
+const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, labelFormatFun, extremes, emitChanges, checkContinuousChanges }) => {
+    const [localExtremes, setLocalExtremes] = useState(extremes || getMinAndMaxFromRanges(ranges));
+    const [localRanges, setLocalRanges] = useState(checkRanges(ranges, options));
     let rangesRef = useRef({});
     let labelsRef = useRef({});
     let namesRef = useRef({});
 
     useEffect(() => {
-        if (init_extremes) {
-            setExtremes(init_extremes);
+        if (extremes) {
+            setLocalExtremes(extremes);
         }
-    }, [init_extremes]);
+    }, [extremes]);
 
     useEffect(() => {
-        setRanges(checkRanges(init_ranges, options));
-        if (!init_extremes) {
-            setExtremes(getMinAndMaxFromRanges(init_ranges));
+        setLocalRanges(checkRanges(ranges, options));
+        if (!extremes) {
+            setLocalExtremes(getMinAndMaxFromRanges(ranges));
         }
-    }, [init_ranges]);
-
-    useEffect(() => {
-        Object.values(ranges).forEach(range => {
-            updateRef(range, extremes, rangesRef);
-        });
     }, [ranges]);
+
+    useEffect(() => {
+        Object.values(localRanges).forEach(range => {
+            updateRef(range, localExtremes, rangesRef);
+        });
+    }, [localRanges]);
 
     return (
         <div style={styles.container}>
-            <div style={styles.mainTrack} onClick={event => (emptySpaceCallback ? emptySpaceCallback(getClickedValueOnTrack(event, extremes, ranges)) : null)}>
-                {Object.values(ranges).map(range => (
+            <div style={styles.mainTrack} onClick={event => (emptySpaceCallback ? emptySpaceCallback(getClickedValueOnTrack(event, localExtremes, localRanges)) : null)}>
+                {Object.values(localRanges).map(range => (
                     <div key={range.id}>
                         {['min', 'max'].map(thumb => {
                             const thumbPosition = thumb === 'min' ? 'left' : 'right';
@@ -150,26 +156,26 @@ const MultiRangeSlider = ({ init_ranges = {}, options = {}, emptySpaceCallback, 
                             return (
                                 <div
                                     key={`${range.id}_${thumb}`}
-                                    onMouseEnter={() => toggleTooltip('show', range, thumb, labelsRef, extremes)}
-                                    onMouseLeave={() => toggleTooltip('hide', range, thumb, labelsRef, extremes)}
+                                    onMouseEnter={() => toggleTooltip('show', range, thumb, labelsRef, localExtremes)}
+                                    onMouseLeave={() => toggleTooltip('hide', range, thumb, labelsRef, localExtremes)}
                                 >
                                     <input
                                         type={'range'}
-                                        min={extremes.min}
-                                        max={extremes.max}
+                                        min={localExtremes.min}
+                                        max={localExtremes.max}
                                         disabled={disabled}
                                         value={range[thumb]}
                                         onChange={event => {
-                                            !disabled ? onThumbValueChange(event.target.value, thumb, range, ranges, setRanges, options, checkContinuousChanges) : null;
+                                            !disabled ? onThumbValueChange(event.target.value, thumb, range, localRanges, setLocalRanges, options, checkContinuousChanges) : null;
                                         }}
                                         onMouseUp={event => {
-                                            !disabled ? onThumbValueChange(event.target.value, thumb, range, ranges, setRanges, options, emitChanges) : null;
+                                            !disabled ? onThumbValueChange(event.target.value, thumb, range, localRanges, setLocalRanges, options, emitChanges) : null;
                                         }}
                                         onClick={event => event.stopPropagation()}
                                         style={!disabled ? styles.thumb : { ...styles.disabledThumb, ...styles.thumb }}
                                     />
                                     <span
-                                        style={styles.sliderValue}
+                                        style={{ ...styles.sliderValue, ...(options?.sliderValueStyles || {}) }}
                                         ref={el => {
                                             labelsRef.current[range.id] = labelsRef.current[range.id] || {};
                                             labelsRef.current[range.id][thumbPosition] = el;
@@ -190,10 +196,10 @@ const MultiRangeSlider = ({ init_ranges = {}, options = {}, emptySpaceCallback, 
                             onMouseEnter={() => toggleNameTooltip('show', range.id, namesRef)}
                             onMouseLeave={() => toggleNameTooltip('hide', range.id, namesRef)}
                         >
-                            <span style={styles.sliderNamePopup} ref={el => (namesRef.current[range.id] = el)}>
+                            <span style={{ ...styles.sliderNamePopup, ...(options?.sliderNamePopupStyles || {}) }} ref={el => (namesRef.current[range.id] = el)}>
                                 {range.name}
                             </span>
-                            <span style={styles.sliderName}>{range.name}</span>
+                            <span style={{ ...styles.sliderName, ...(options?.sliderNameStyles || {}) }}>{range.name}</span>
                         </div>
                     </div>
                 ))}
