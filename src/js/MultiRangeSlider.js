@@ -79,6 +79,7 @@ const styles = {
     },
     disabledThumb: {
         backgroundColor: '#ccc!important',
+        cursor: 'not-allowed',
         '&::WebkitSliderThumb': {
             backgroundColor: '#ccc!important',
         },
@@ -87,7 +88,8 @@ const styles = {
         },
     },
     thumb: {
-        pointerEvents: 'none',
+        pointerEvents: 'all',
+        cursor: 'pointer',
         backgroundColor: 'black',
         position: 'absolute',
         height: '0',
@@ -97,6 +99,7 @@ const styles = {
         '&::WebkitSliderThumb': {
             border: 'none',
             borderRadius: '50%',
+            backgroundColor: 'black',
             boxShadow: '0 0 1px 1px #ced4da',
             cursor: 'pointer',
             height: '18px',
@@ -108,6 +111,7 @@ const styles = {
         '&::MozRangeThumb': {
             border: 'none',
             borderRadius: '50%',
+            backgroundColor: 'black',
             boxShadow: '0 0 1px 1px #ced4da',
             cursor: 'pointer',
             height: '18px',
@@ -152,7 +156,7 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
                     <div key={range.id}>
                         {['min', 'max'].map(thumb => {
                             const thumbPosition = thumb === 'min' ? 'left' : 'right';
-                            const disabled = (options.hasOwnProperty('isImmovable') && options.isImmovable(range)) || (range.immovable && range.immovable[thumbPosition]);
+                            const disabled = !!((options.hasOwnProperty('isImmovable') && options.isImmovable(range)) || (range.immovable && range.immovable[thumbPosition]));
                             return (
                                 <div
                                     key={`${range.id}_${thumb}`}
@@ -166,13 +170,31 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
                                         disabled={disabled}
                                         value={range[thumb]}
                                         onChange={event => {
-                                            !disabled ? onThumbValueChange(event.target.value, thumb, range, localRanges, setLocalRanges, options, checkContinuousChanges) : null;
+                                            !disabled
+                                                ? onThumbValueChange(
+                                                      event.target.value,
+                                                      thumb,
+                                                      range,
+                                                      localRanges,
+                                                      setLocalRanges,
+                                                      options,
+                                                      checkContinuousChanges,
+                                                      labelsRef,
+                                                      localExtremes,
+                                                  )
+                                                : null;
                                         }}
                                         onMouseUp={event => {
-                                            !disabled ? onThumbValueChange(event.target.value, thumb, range, localRanges, setLocalRanges, options, emitChanges) : null;
+                                            !disabled
+                                                ? onThumbValueChange(event.target.value, thumb, range, localRanges, setLocalRanges, options, emitChanges, localExtremes)
+                                                : null;
                                         }}
                                         onClick={event => event.stopPropagation()}
-                                        style={!disabled ? styles.thumb : { ...styles.disabledThumb, ...styles.thumb }}
+                                        style={
+                                            !disabled
+                                                ? { ...styles.thumb, ...(options?.sliderThumbStyles || {}) }
+                                                : { ...styles.thumb, ...styles.disabledThumb, ...(options?.sliderThumbStyles || {}) }
+                                        }
                                     />
                                     <span
                                         style={{ ...styles.sliderValue, ...(options?.sliderValueStyles || {}) }}

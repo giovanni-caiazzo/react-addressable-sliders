@@ -26,7 +26,7 @@ export const updateRef = (range, extremes, rangesRef) => {
     }
 };
 
-export const onThumbValueChange = (target_value, thumb, range, ranges, setRanges, options, emitChanges) => {
+export const onThumbValueChange = (target_value, thumb, range, ranges, setRanges, options, emitChanges, labelsRef, extremes) => {
     let newValue;
     if (thumb === 'min') {
         const value = Math.min(Number(target_value), range.max - 1);
@@ -60,6 +60,9 @@ export const onThumbValueChange = (target_value, thumb, range, ranges, setRanges
             return;
         }
     }
+
+    changeTooltipPosition(range, thumb, labelsRef, extremes);
+
     setRanges(prevState => ({
         ...prevState,
         [range.id]: { ...range, [thumb]: newValue },
@@ -92,10 +95,9 @@ export const checkRanges = (init_ranges, options) => {
     return checked_ranges;
 };
 
-export const toggleTooltip = (action, range, thumb, labelsRef, extremes) => {
+export const changeTooltipPosition = (range, thumb, labelsRef, extremes) => {
     if (labelsRef.current && labelsRef.current[range.id]) {
         const label_position = thumb === 'min' ? 'left' : 'right';
-        labelsRef.current[range.id][label_position].style.visibility = action === 'show' ? 'visible' : 'hidden';
         const leftPosition = getPercent(range[thumb], extremes.min, extremes.max);
 
         if (leftPosition > 80) {
@@ -105,6 +107,14 @@ export const toggleTooltip = (action, range, thumb, labelsRef, extremes) => {
             labelsRef.current[range.id][label_position].style.left = `${leftPosition}%`;
             labelsRef.current[range.id][label_position].style.right = null;
         }
+    }
+};
+
+export const toggleTooltip = (action, range, thumb, labelsRef, extremes) => {
+    if (labelsRef.current && labelsRef.current[range.id]) {
+        const label_position = thumb === 'min' ? 'left' : 'right';
+        labelsRef.current[range.id][label_position].style.visibility = action === 'show' ? 'visible' : 'hidden';
+        changeTooltipPosition(range, thumb, labelsRef, extremes);
     }
 };
 

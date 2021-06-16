@@ -68,3 +68,4 @@ const MySlider = () => {
 * `sliderValueStyles` is an `Object` that lets you customize the style of the slider values under both extremes.
 * `sliderNameStyles` is an `Object` that lets you customize the style of the ranges' name.
 * `sliderNamePopupStyles` is an `Object` that lets you customize the style of the ranges' name when they popup `onMouseHover`.
+* `sliderThumbStyles` is an `Object` that lets you customize the style of the ranges' thumbs.
