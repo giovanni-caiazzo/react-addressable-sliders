@@ -80,6 +80,7 @@ const styles = {
     disabledThumb: {
         backgroundColor: '#ccc!important',
         cursor: 'not-allowed',
+        zIndex: 3,
         '&::WebkitSliderThumb': {
             backgroundColor: '#ccc!important',
         },

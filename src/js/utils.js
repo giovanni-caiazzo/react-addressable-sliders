@@ -43,7 +43,7 @@ export const onThumbValueChange = (target_value, thumb, range, ranges, setRanges
                 .map(item => item.min)
                 .filter(min => min >= range.max),
         );
-        newValue = Math.min(value, nearestRangeValue - (options?.rangePadding || 1));
+        newValue = Math.min(value, nearestRangeValue - (options?.rangePadding || 0));
     }
     if (emitChanges) {
         const result = emitChanges(range, newValue, thumb);
