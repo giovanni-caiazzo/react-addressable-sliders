@@ -45,10 +45,9 @@
     "scripts": {
         "start": "webpack serve --entry ./src/index-dev.js",
         "build": "rm -r lib && babel ./src -d lib --config-file ./.babelrc --ignore './src/index-dev.js'",
-        "publish": "yarn jest && yarn build && yarn publish-new-patch",
         "format": "yarn run format:prettier",
         "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write",
         "jest": "jest --config jest.config.js",
-        "publish-new-patch": "npm version patch && npm publish"
+        "publish-new-patch": "yarn jest && yarn build && npm version patch && npm publish"
     }
 }
