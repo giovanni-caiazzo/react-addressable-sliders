@@ -29,6 +29,7 @@
         "babel-preset-react": "^6.24.1",
         "css-loader": "^5.2.6",
         "html-webpack-plugin": "^5.3.1",
+        "jest-cli": "^25.3.0",
         "prettier": "^2.3.1",
         "pretty-quick": "^3.1.0",
         "react": "^17.0.2",
@@ -46,6 +47,7 @@
         "build": "rm -r lib && babel ./src -d lib --config-file ./.babelrc --ignore './src/index-dev.js'",
         "format": "yarn run format:prettier",
         "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write",
+        "jest": "jest --config jest.config.js",
         "publish-new-patch": "npm version patch && npm publish"
     }
 }

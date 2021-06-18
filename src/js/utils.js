@@ -131,12 +131,12 @@ export const getClickedValueOnTrack = (event, extremes, ranges) => {
     const xOffset = event.target.offsetLeft;
     const relativePercentage = ((xPosition - xOffset) / xTotal) * 100;
     const relativeValue = parseInt(extremes.min + (relativePercentage / 100) * (extremes.max - extremes.min));
-    let closestRanges = { min: relativeValue, max: relativeValue };
+    let closestRanges = extremes;
     Object.values(ranges).forEach(range => {
-        if (range.max < closestRanges.min) {
+        if (closestRanges.min <= range.max && range.max <= relativeValue) {
             closestRanges.min = Math.max(range.max, closestRanges.min === relativeValue ? range.max : closestRanges.min);
         }
-        if (range.min > closestRanges.max) {
+        if (closestRanges.max >= range.min && range.min >= relativeValue) {
             closestRanges.max = Math.min(range.min, closestRanges.max === relativeValue ? range.min : closestRanges.max);
         }
     });
