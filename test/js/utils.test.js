@@ -79,5 +79,6 @@ describe('Testing getClickedValueOnTrack', () => {
         };
         const result = getClickedValueOnTrack(syntethic_event, extremes, ranges);
         expect(result.closestRanges).toStrictEqual({ max: 1572535653, min: 1541503236 });
+        expect(Math.floor(result.relativePercentage)).toBe(32);
     });
 });
