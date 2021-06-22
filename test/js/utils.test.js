@@ -1,7 +1,7 @@
 import React from 'react';
-
+import stitching_data from '../resources/example_data.json';
 // component under test
-import { getClickedValueOnTrack } from '../../src/js/utils';
+import { checkRanges, getClickedValueOnTrack, getMinAndMaxFromRanges } from '../../src/js/utils';
 
 describe('Testing getClickedValueOnTrack', () => {
     beforeEach(cb => {
@@ -80,5 +80,58 @@ describe('Testing getClickedValueOnTrack', () => {
         const result = getClickedValueOnTrack(syntethic_event, extremes, ranges);
         expect(result.closestRanges).toStrictEqual({ max: 1572535653, min: 1541503236 });
         expect(Math.floor(result.relativePercentage)).toBe(32);
+    });
+});
+
+describe('Testing getMinAndMaxFromRanges()', () => {
+    beforeEach(cb => {
+        jest.restoreAllMocks();
+        cb();
+    });
+
+    afterEach(cb => {
+        cb();
+    });
+
+    it('checks the null argument output', () => {
+        let result = getMinAndMaxFromRanges(null);
+        expect(result).toStrictEqual({ max: 100, min: 0 });
+
+        result = getMinAndMaxFromRanges({});
+        expect(result).toStrictEqual({ max: 100, min: 0 });
+    });
+
+    it('checks the output when the ranges are defined', () => {
+        const result = getMinAndMaxFromRanges(stitching_data);
+        expect(result).toStrictEqual({ max: 1623567610, min: 1541506814 });
+    });
+});
+
+describe('Testing checkRanges()', () => {
+    beforeEach(cb => {
+        jest.restoreAllMocks();
+        cb();
+    });
+
+    afterEach(cb => {
+        cb();
+    });
+
+    it('checks the null argument output', () => {
+        let result = checkRanges(null);
+        expect(result).toStrictEqual({});
+
+        result = checkRanges({});
+        expect(result).toStrictEqual({});
+    });
+
+    it('checks the output when the ranges are defined', () => {
+        const result = checkRanges(stitching_data);
+        expect(result).toMatchSnapshot();
+    });
+
+    it('checks the output when the ranges are defined, with options', () => {
+        const result = checkRanges(stitching_data, { getTrackColor: () => '#CCC' });
+        expect(result).toMatchSnapshot();
     });
 });
