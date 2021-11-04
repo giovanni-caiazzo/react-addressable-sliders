@@ -52,7 +52,7 @@
     },
     "scripts": {
         "start": "webpack serve --entry ./src/index-dev.tsx",
-        "build": "rm -rfv lib/* && babel ./src -d lib --config-file ./.babelrc --ignore './src/index-dev.tsx'",
+        "build": "rm -rfv lib/* && tsc",
         "format": "yarn run format:prettier",
         "format:prettier": "node_modules/.bin/prettier --config .prettierrc \"src/**/*.*\" --write",
         "jest": "jest --config jest.config.js",
