@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing checkRanges() checks the output when the ranges are defined 1`] = `
+Object {
+  "2c7eaa45-1e81-4fbd-b056-6f5a83cec328": Object {
+    "actualTrackColor": "#dba06e",
+    "created": 1623570583131,
+    "id": "2c7eaa45-1e81-4fbd-b056-6f5a83cec328",
+    "kwh": 1008.707,
+    "max": 1596281250,
+    "min": 1573000274,
+    "name": "range1",
+    "parent_id": "slider1",
+    "ref_id": "dba06e6f-cf48-43f6-8087-a824d6deb0ce",
+    "updated": 1623570583131,
+  },
+  "34807df5-7235-4774-b9eb-6fa6fb469f27": Object {
+    "actualTrackColor": "#a44e86",
+    "created": 1623570583091,
+    "id": "34807df5-7235-4774-b9eb-6fa6fb469f27",
+    "kwh": 737.266,
+    "max": 1555904203,
+    "min": 1541506814,
+    "name": "range2",
+    "parent_id": "slider1",
+    "ref_id": "a44e86a0-5cb1-4e41-a3be-a783e4c3afc0",
+    "updated": 1623570583091,
+  },
+  "7ee0393a-afb9-42fb-b790-6bdd50f501cc": Object {
+    "actualTrackColor": "#dba06e",
+    "created": 1623570583164,
+    "id": "7ee0393a-afb9-42fb-b790-6bdd50f501cc",
+    "kwh": 1000.054,
+    "max": 1623567610,
+    "min": 1598957385,
+    "name": "range3",
+    "parent_id": "slider1",
+    "ref_id": "dba06e6f-cf48-43f6-8087-a824d6deb0ce",
+    "updated": 1623570583164,
+  },
+}
+`;
+
+exports[`Testing checkRanges() checks the output when the ranges are defined, with options 1`] = `
+Object {
+  "2c7eaa45-1e81-4fbd-b056-6f5a83cec328": Object {
+    "actualTrackColor": "#CCC",
+    "created": 1623570583131,
+    "id": "2c7eaa45-1e81-4fbd-b056-6f5a83cec328",
+    "kwh": 1008.707,
+    "max": 1596281250,
+    "min": 1573000274,
+    "name": "range1",
+    "parent_id": "slider1",
+    "ref_id": "dba06e6f-cf48-43f6-8087-a824d6deb0ce",
+    "updated": 1623570583131,
+  },
+  "34807df5-7235-4774-b9eb-6fa6fb469f27": Object {
+    "actualTrackColor": "#CCC",
+    "created": 1623570583091,
+    "id": "34807df5-7235-4774-b9eb-6fa6fb469f27",
+    "kwh": 737.266,
+    "max": 1555904203,
+    "min": 1541506814,
+    "name": "range2",
+    "parent_id": "slider1",
+    "ref_id": "a44e86a0-5cb1-4e41-a3be-a783e4c3afc0",
+    "updated": 1623570583091,
+  },
+  "7ee0393a-afb9-42fb-b790-6bdd50f501cc": Object {
+    "actualTrackColor": "#CCC",
+    "created": 1623570583164,
+    "id": "7ee0393a-afb9-42fb-b790-6bdd50f501cc",
+    "kwh": 1000.054,
+    "max": 1623567610,
+    "min": 1598957385,
+    "name": "range3",
+    "parent_id": "slider1",
+    "ref_id": "dba06e6f-cf48-43f6-8087-a824d6deb0ce",
+    "updated": 1623570583164,
+  },
+}
+`;

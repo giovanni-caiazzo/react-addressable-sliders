@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Thumb, Range } from './js/utils';
 import MultiRangeSlider from './js/MultiRangeSlider';
 
 const App = () => {
-    const myCallback = (range, newValue, thumb) => console.log(range, newValue, thumb);
+    const myCallback = (range: Range, newValue: string, thumb: Thumb) => console.log(range, newValue, thumb);
     return (
         <div style={{ paddingTop: '30px' }}>
             <MultiRangeSlider

@@ -1,7 +1,6 @@
-import React from 'react';
 import stitching_data from '../resources/example_data.json';
 // component under test
-import { checkRanges, getClickedValueOnTrack, getMinAndMaxFromRanges } from '../../src/js/utils';
+import { checkRanges, getClickedValueOnTrack, getMinAndMaxFromRanges, Ranges, ReactOnClickEvent } from '../../src/js/utils';
 
 describe('Testing getClickedValueOnTrack', () => {
     beforeEach(cb => {
@@ -16,7 +15,7 @@ describe('Testing getClickedValueOnTrack', () => {
     it('gives the extremes as closestRanges when no ranges have been created', () => {
         const syntethic_event = { clientX: 650, target: { clientWidth: 1993, offsetLeft: 8 } };
         const extremes = { max: 1623567610, min: 1541503236 };
-        const result = getClickedValueOnTrack(syntethic_event, extremes, {});
+        const result = getClickedValueOnTrack(syntethic_event as unknown as ReactOnClickEvent, extremes, {});
         expect(result.closestRanges).toStrictEqual(extremes);
     });
 
@@ -77,7 +76,7 @@ describe('Testing getClickedValueOnTrack', () => {
                 actualTrackColor: '#CCCCCC',
             },
         };
-        const result = getClickedValueOnTrack(syntethic_event, extremes, ranges);
+        const result = getClickedValueOnTrack(syntethic_event as unknown as ReactOnClickEvent, extremes, ranges as unknown as Ranges);
         expect(result.closestRanges).toStrictEqual({ max: 1572535653, min: 1541503236 });
         expect(Math.floor(result.relativePercentage)).toBe(32);
     });
@@ -94,6 +93,7 @@ describe('Testing getMinAndMaxFromRanges()', () => {
     });
 
     it('checks the null argument output', () => {
+        // @ts-ignore
         let result = getMinAndMaxFromRanges(null);
         expect(result).toStrictEqual({ max: 100, min: 0 });
 
@@ -118,15 +118,16 @@ describe('Testing checkRanges()', () => {
     });
 
     it('checks the null argument output', () => {
-        let result = checkRanges(null);
+        // @ts-ignore
+        let result = checkRanges(null, null);
         expect(result).toStrictEqual({});
 
-        result = checkRanges({});
+        result = checkRanges({}, {});
         expect(result).toStrictEqual({});
     });
 
     it('checks the output when the ranges are defined', () => {
-        const result = checkRanges(stitching_data);
+        const result = checkRanges(stitching_data, {});
         expect(result).toMatchSnapshot();
     });
 

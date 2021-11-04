@@ -1,6 +1,20 @@
-import React, { useEffect, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { checkRanges, getClickedValueOnTrack, getMinAndMaxFromRanges, onThumbValueChange, toggleNameTooltip, toggleTooltip, updateRef } from './utils';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import {
+    checkRanges,
+    getClickedValueOnTrack,
+    getMinAndMaxFromRanges,
+    onThumbValueChange,
+    Thumb,
+    Direction,
+    toggleNameTooltip,
+    toggleTooltip,
+    updateRef,
+    ReactLabelRef,
+    ReactRef,
+    Extremes,
+    Ranges,
+    Options,
+} from './utils';
 
 const styles = {
     container: {
@@ -8,7 +22,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: '16px',
-    },
+    } as React.CSSProperties,
     mainTrack: {
         backgroundColor: '#ccc',
         width: '100%',
@@ -20,7 +34,7 @@ const styles = {
         '&:hover, &$focusVisible': {
             boxShadow: '0 0 1px 1px #777',
         },
-    },
+    } as React.CSSProperties,
     sliderRange: {
         position: 'absolute',
         borderRadius: '3px',
@@ -28,7 +42,7 @@ const styles = {
         width: '100%',
         marginTop: '-2px',
         cursor: 'default',
-    },
+    } as React.CSSProperties,
     sliderName: {
         position: 'absolute',
         fontWeight: 'bold',
@@ -43,7 +57,7 @@ const styles = {
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         zIndex: 1,
-    },
+    } as React.CSSProperties,
     sliderNamePopup: {
         position: 'absolute',
         fontWeight: 'bold',
@@ -61,7 +75,7 @@ const styles = {
         border: '1px solid #ccc',
         borderRadius: '10px',
         visibility: 'hidden',
-    },
+    } as React.CSSProperties,
     sliderValue: {
         position: 'absolute',
         fontSize: '12px',
@@ -76,7 +90,7 @@ const styles = {
         border: '1px solid #ccc',
         borderRadius: '10px',
         zIndex: 1500,
-    },
+    } as React.CSSProperties,
     disabledThumb: {
         backgroundColor: '#ccc!important',
         cursor: 'not-allowed',
@@ -87,7 +101,7 @@ const styles = {
         '&::MozRangeThumb': {
             backgroundColor: '#ccc!important',
         },
-    },
+    } as React.CSSProperties,
     thumb: {
         pointerEvents: 'all',
         cursor: 'pointer',
@@ -121,15 +135,25 @@ const styles = {
             pointerEvents: 'all',
             position: 'relative',
         },
-    },
+    } as React.CSSProperties,
 };
 
-const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, labelFormatFun, extremes, emitChanges, checkContinuousChanges }) => {
-    const [localExtremes, setLocalExtremes] = useState(extremes || getMinAndMaxFromRanges(ranges));
-    const [localRanges, setLocalRanges] = useState(checkRanges(ranges, options));
-    let rangesRef = useRef({});
-    let labelsRef = useRef({});
-    let namesRef = useRef({});
+type ComponentProps = {
+    ranges: Ranges;
+    options?: Options;
+    emptySpaceCallback?: Function;
+    labelFormatFun?: Function;
+    extremes?: Extremes;
+    emitChanges?: Function;
+    checkContinuousChanges?: Function;
+};
+
+const MultiRangeSlider: FunctionComponent<ComponentProps> = ({ ranges, options, emptySpaceCallback, labelFormatFun, extremes, emitChanges, checkContinuousChanges }) => {
+    const [localExtremes, setLocalExtremes]: [Extremes, Function] = useState(extremes || getMinAndMaxFromRanges(ranges));
+    const [localRanges, setLocalRanges]: [Ranges, Function] = useState(checkRanges(ranges, options || {}));
+    let rangesRef: ReactRef = useRef({});
+    let labelsRef: ReactLabelRef = useRef({});
+    let namesRef: ReactRef = useRef({});
 
     useEffect(() => {
         if (extremes) {
@@ -138,7 +162,7 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
     }, [extremes]);
 
     useEffect(() => {
-        setLocalRanges(checkRanges(ranges, options));
+        setLocalRanges(checkRanges(ranges, options || {}));
         if (!extremes) {
             setLocalExtremes(getMinAndMaxFromRanges(ranges));
         }
@@ -155,9 +179,9 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
             <div style={styles.mainTrack} onClick={event => (emptySpaceCallback ? emptySpaceCallback(getClickedValueOnTrack(event, localExtremes, localRanges)) : null)}>
                 {Object.values(localRanges).map(range => (
                     <div key={range.id}>
-                        {['min', 'max'].map(thumb => {
-                            const thumbPosition = thumb === 'min' ? 'left' : 'right';
-                            const disabled = !!((options.hasOwnProperty('isImmovable') && options.isImmovable(range)) || (range.immovable && range.immovable[thumbPosition]));
+                        {[Thumb.MIN, Thumb.MAX].map(thumb => {
+                            const thumbPosition = thumb === Thumb.MIN ? Direction.LEFT : 'right';
+                            const disabled = !!((options && options.isImmovable && options.isImmovable(range)) || (range.immovable && range.immovable[thumbPosition]));
                             return (
                                 <div
                                     key={`${range.id}_${thumb}`}
@@ -178,8 +202,8 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
                                                       range,
                                                       localRanges,
                                                       setLocalRanges,
-                                                      options,
-                                                      checkContinuousChanges,
+                                                      options || {},
+                                                      checkContinuousChanges ? checkContinuousChanges : () => {},
                                                       labelsRef,
                                                       localExtremes,
                                                   )
@@ -187,7 +211,17 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
                                         }}
                                         onMouseUp={event => {
                                             !disabled
-                                                ? onThumbValueChange(event.target.value, thumb, range, localRanges, setLocalRanges, options, emitChanges, localExtremes)
+                                                ? onThumbValueChange(
+                                                      (event.target as HTMLInputElement).value,
+                                                      thumb,
+                                                      range,
+                                                      localRanges,
+                                                      setLocalRanges,
+                                                      options || {},
+                                                      emitChanges ? emitChanges : () => {},
+                                                      labelsRef,
+                                                      localExtremes,
+                                                  )
                                                 : null;
                                         }}
                                         onClick={event => event.stopPropagation()}
@@ -200,8 +234,12 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
                                     <span
                                         style={{ ...styles.sliderValue, ...(options?.sliderValueStyles || {}) }}
                                         ref={el => {
-                                            labelsRef.current[range.id] = labelsRef.current[range.id] || {};
-                                            labelsRef.current[range.id][thumbPosition] = el;
+                                            if (labelsRef.current) {
+                                                labelsRef.current[range.id] = labelsRef.current[range.id] || {};
+                                                if (labelsRef.current[range.id] && el) {
+                                                    labelsRef.current[range.id][thumbPosition] = el;
+                                                }
+                                            }
                                         }}
                                     >
                                         {labelFormatFun ? labelFormatFun(range[thumb]) : range[thumb]}
@@ -212,14 +250,25 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
                         <div
                             style={{
                                 ...styles.sliderRange,
-                                backgroundColor: range.actualTrackColor || null,
+                                backgroundColor: range.actualTrackColor || '',
                             }}
                             onClick={event => event.stopPropagation()}
-                            ref={el => (rangesRef.current[range.id] = el)}
+                            ref={el => {
+                                if (rangesRef.current && el) {
+                                    rangesRef.current[range.id] = el;
+                                }
+                            }}
                             onMouseEnter={() => toggleNameTooltip('show', range.id, namesRef)}
                             onMouseLeave={() => toggleNameTooltip('hide', range.id, namesRef)}
                         >
-                            <span style={{ ...styles.sliderNamePopup, ...(options?.sliderNamePopupStyles || {}) }} ref={el => (namesRef.current[range.id] = el)}>
+                            <span
+                                style={{ ...styles.sliderNamePopup, ...(options?.sliderNamePopupStyles || {}) }}
+                                ref={el => {
+                                    if (namesRef.current && el) {
+                                        namesRef.current[range.id] = el;
+                                    }
+                                }}
+                            >
                                 {range.name}
                             </span>
                             <span style={{ ...styles.sliderName, ...(options?.sliderNameStyles || {}) }}>{range.name}</span>
@@ -231,14 +280,9 @@ const MultiRangeSlider = ({ ranges = {}, options = {}, emptySpaceCallback, label
     );
 };
 
-MultiRangeSlider.propTypes = {
-    ranges: PropTypes.object.isRequired,
-    extremes: PropTypes.object,
-    options: PropTypes.object,
-    emptySpaceCallback: PropTypes.func,
-    labelFormatFun: PropTypes.func,
-    emitChanges: PropTypes.func,
-    checkContinuousChanges: PropTypes.func,
+MultiRangeSlider.defaultProps = {
+    ranges: {},
+    options: {},
 };
 
 export default MultiRangeSlider;
