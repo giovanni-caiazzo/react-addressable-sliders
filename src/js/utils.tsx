@@ -33,6 +33,7 @@ export type Options = {
     sliderValueStyles?: Object;
     sliderNamePopupStyles?: Object;
     sliderNameStyles?: Object;
+    isVertical?: boolean;
 };
 
 export const getMinAndMaxFromRanges = (ranges: Ranges): Extremes => {

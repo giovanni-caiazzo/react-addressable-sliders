@@ -23,6 +23,10 @@ const styles = {
         justifyContent: 'center',
         marginTop: '16px',
     } as React.CSSProperties,
+    containerVertical: {
+        transform: 'rotate(90deg)',
+        transformOrigin: 'left center',
+    } as React.CSSProperties,
     mainTrack: {
         backgroundColor: '#ccc',
         width: '100%',
@@ -91,6 +95,21 @@ const styles = {
         borderRadius: '10px',
         zIndex: 1500,
     } as React.CSSProperties,
+    labelVertical: {
+        transform: 'rotate(-90deg) translateX(10px)',
+        left: '50%',
+        transformOrigin: 'left',
+        overflow: 'visible',
+        textAlign: 'left',
+    } as React.CSSProperties,
+    labelPopupVertical: {
+        transform: 'rotate(-90deg) translateX(50%)',
+        transformOrigin: 'center',
+    } as React.CSSProperties,
+    numberPopupVertical: {
+        transform: 'rotate(-90deg) translateX(50%)',
+        transformOrigin: 'right'
+    } as React.CSSProperties,
     disabledThumb: {
         backgroundColor: '#ccc!important',
         cursor: 'not-allowed',
@@ -146,6 +165,7 @@ type ComponentProps = {
     extremes?: Extremes;
     emitChanges?: Function;
     checkContinuousChanges?: Function;
+    isVertical?: boolean
 };
 
 const MultiRangeSlider: FunctionComponent<ComponentProps> = ({ ranges, options, emptySpaceCallback, labelFormatFun, extremes, emitChanges, checkContinuousChanges }) => {
@@ -175,7 +195,7 @@ const MultiRangeSlider: FunctionComponent<ComponentProps> = ({ ranges, options, 
     }, [localRanges]);
 
     return (
-        <div style={styles.container}>
+        <div style={{...styles.container, ...(options?.isVertical ? styles.containerVertical : {})}}>
             <div style={styles.mainTrack} onClick={event => (emptySpaceCallback ? emptySpaceCallback(getClickedValueOnTrack(event, localExtremes, localRanges)) : null)}>
                 {Object.values(localRanges).map(range => (
                     <div key={range.id}>
@@ -232,7 +252,7 @@ const MultiRangeSlider: FunctionComponent<ComponentProps> = ({ ranges, options, 
                                         }
                                     />
                                     <span
-                                        style={{ ...styles.sliderValue, ...(options?.sliderValueStyles || {}) }}
+                                        style={{ ...styles.sliderValue, ...(options?.sliderValueStyles || {}), ...(options?.isVertical ? styles.numberPopupVertical : {}) }}
                                         ref={el => {
                                             if (labelsRef.current) {
                                                 labelsRef.current[range.id] = labelsRef.current[range.id] || {};
@@ -262,7 +282,7 @@ const MultiRangeSlider: FunctionComponent<ComponentProps> = ({ ranges, options, 
                             onMouseLeave={() => toggleNameTooltip('hide', range.id, namesRef)}
                         >
                             <span
-                                style={{ ...styles.sliderNamePopup, ...(options?.sliderNamePopupStyles || {}) }}
+                                style={{ ...styles.sliderNamePopup, ...(options?.sliderNamePopupStyles || {}), ...(options?.isVertical ? styles.labelPopupVertical : {}) }}
                                 ref={el => {
                                     if (namesRef.current && el) {
                                         namesRef.current[range.id] = el;
@@ -271,7 +291,7 @@ const MultiRangeSlider: FunctionComponent<ComponentProps> = ({ ranges, options, 
                             >
                                 {range.name}
                             </span>
-                            <span style={{ ...styles.sliderName, ...(options?.sliderNameStyles || {}) }}>{range.name}</span>
+                            <span style={{ ...styles.sliderName, ...(options?.sliderNameStyles || {}), ...(options?.isVertical ? styles.labelVertical : {}) }}>{range.name}</span>
                         </div>
                     </div>
                 ))}

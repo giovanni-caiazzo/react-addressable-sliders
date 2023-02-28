@@ -69,6 +69,7 @@ const MySlider = () => {
 * `sliderNameStyles` is an `Object` that lets you customize the style of the ranges' name.
 * `sliderNamePopupStyles` is an `Object` that lets you customize the style of the ranges' name when they popup `onMouseHover`.
 * `sliderThumbStyles` is an `Object` that lets you customize the style of the ranges' thumbs.
+* `isVertical` is a `Boolean` that lets you set the slider in a vertical position.
 
 ### Typescript
 From version 0.0.27 onwards this library is made in Typescript
