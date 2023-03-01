@@ -1,6 +1,6 @@
 {
     "name": "react-addressable-sliders",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Multi-range slider made with react with addressable and identifiable ranges",
     "private": false,
     "author": "Giovanni Caiazzo",
