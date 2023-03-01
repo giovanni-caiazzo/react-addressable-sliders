@@ -24,8 +24,8 @@ const styles = {
         marginTop: '16px',
     } as React.CSSProperties,
     containerVertical: {
-        transform: 'rotate(90deg)',
-        transformOrigin: 'left center',
+        transform: 'translateX(-100%) rotate(-90deg)',
+        transformOrigin: 'right center',
     } as React.CSSProperties,
     mainTrack: {
         backgroundColor: '#ccc',
@@ -96,18 +96,18 @@ const styles = {
         zIndex: 1500,
     } as React.CSSProperties,
     labelVertical: {
-        transform: 'rotate(-90deg) translateX(10px)',
+        transform: 'translateY(30px) rotate(90deg)',
         left: '50%',
         transformOrigin: 'left',
         overflow: 'visible',
         textAlign: 'left',
     } as React.CSSProperties,
     labelPopupVertical: {
-        transform: 'rotate(-90deg) translateX(50%)',
+        transform: 'rotate(90deg) translateX(67%)',
         transformOrigin: 'center',
     } as React.CSSProperties,
     numberPopupVertical: {
-        transform: 'rotate(-90deg) translateX(50%)',
+        transform: 'rotate(90deg) translate(50%, 100%)',
         transformOrigin: 'right'
     } as React.CSSProperties,
     disabledThumb: {
